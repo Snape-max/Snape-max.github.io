@@ -1,0 +1,138 @@
+<html>
+<head>
+<style>
+* {
+	box-sizing: border-box;
+}
+body {
+	height: 100%;
+	margin: auto;
+	background-image: url('https://tva1.sinaimg.cn/large/ec43126fgy1gsejlvldg8j2280190npf.jpg'); 
+	no-repeat: fixed;
+	background-size: cover;
+	
+}
+.header {
+	background-color: #f1f1f1;
+	padding: 20px;
+	text-align: center;
+}
+.topnav {
+	overflow: hidden;
+	background-color: #333;
+}
+.topnav a {
+	float: left;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+.topnav a:hover {
+	background-color: #ddd;
+	color: black;
+}
+.div{
+	width: fit-content;
+}
+.input{
+	border: 0;
+	outline: 0;
+	text-decoration: 4px soild underline;
+	text-underline-offset: 10px;
+	line-height: 2;
+	background-size: 10rem 4px;
+	padding-left: 4px;
+	border-radius: 12px;
+}
+.button {
+	background-color: #3cb371;
+	border: none;
+	border-radius: 8px;
+	color: white;
+	padding: 6px 8px;
+	text-align: center;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+
+</style>
+<title id='poem_info'></title>
+
+<h3 id="poem_sentence"></h3>
+<span id="jinrishici-sentence">正在加载今日诗词....</span>
+<script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+<script type="text/javascript">
+    jinrishici.load(function (result) {
+        var sentence = document.querySelector("#poem_sentence")
+        var info = document.querySelector("#poem_info")
+        sentence.innerHTML = result.data.content
+        info.innerHTML = result.data.origin.title
+    });
+</script>
+<div class='topnav'>
+	<a href="https://iw233.cn/API/Random.php">随机世界</a>
+	<a href='https://iw233.cn/API/MirlKoi-iw233.php'>@1789</a>
+	<a href='https://iw233.cn/API/MP.php'>旧世界</a>
+	<a href='https://iw233.cn/API/PC.php'>新文明</a>
+	<a href='https://iw233.cn/API/MirlKoi.php'>哥斯拉</a>
+	<a href='https://ssnape.rth1.me/article.html'>古怪世界</a>
+	<a href='https://ssnape.rth1.me/test.html'>美丽世界</a>
+	<a href="javascript:alert('别再点了(o|o) ');">Yamero</a>
+</div>
+<h1>猜数字小游戏</h1>
+<div class='button'>
+	<input id="num" class='put1' placeholder="请输入数字">
+</div>
+<button class="button" onclick="myfun()">提交</button>
+<button class="button" onclick="fun()">弹窗式</button>
+<p id='text'></p>
+<script>
+	function myfun() {
+	var x,y,z,n;
+	x1 = document.getElementById('num');y = 10
+    x = x1.value;
+	if (x == y)
+	{
+		z = '正确';
+	}
+	else{
+		if (x>y){
+			z = '大了';	
+		}
+		else{
+			z = '小了';
+		}
+	}
+    
+	n = document.getElementById('text');
+    n.innerHTML = z;
+    n.style.fontSize= x*2;
+    
+}
+function fun() {
+	var dd = prompt('请输入一个数字');yy = 10;
+	if (dd == yy){
+		z = '正确'
+	}
+	else{
+		if (dd>yy) {
+			z = '偏大'
+		}
+		else{
+			z = '偏小'
+		}
+	}
+	window.alert(z)
+}
+function cc() {
+	window.confirm('确定离开吗？');
+}
+
+</script>
+<body onbeforeunload="return cc();">
+</body>
+</html>
