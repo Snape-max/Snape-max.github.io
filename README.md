@@ -2,7 +2,7 @@
 
 Here are some interesting things
 ## like these
-[click here](https://snape-max.github.io/fireworks).
+[fireworks](https://snape-max.github.io/fireworks).
 
 
 [birthday cake](https://snape-max.github.io/cake/index.html)
