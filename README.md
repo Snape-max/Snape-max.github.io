@@ -1,9 +1,12 @@
 ## Welcome to Snape's Page
 
 Here are some interesting things
-## fireworks
+## like these
 [click here](https://snape-max.github.io/fireworks).
+
+
 [birthday cake](https://snape-max.github.io/cake/index.html)
+
 
 ### Markdown
 
