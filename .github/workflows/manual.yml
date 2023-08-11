@@ -1,0 +1,25 @@
+name: Update Posts
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 在每天 0 点运行
+
+jobs:
+  update-posts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x # 选择你的 Python 版本
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Run script
+        run: python blog/summon.py
