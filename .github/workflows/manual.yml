@@ -22,4 +22,4 @@ jobs:
       - name: Run script
         run: |
           cd blog
-          python summon.py
+          echo "hello"
