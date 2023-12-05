@@ -174,7 +174,7 @@ function draw(event){
                 texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
                 textr.textContent = `反射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
                 textt.textContent = `折射角: ${(thet/(Math.PI)*180).toFixed(1)}°`;
-            } else if(e1value*e2value < 0) {
+            } else if(e2value*mu2value < 0) {
                 texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
                 textr.textContent = `反射角: NaN`;
                 textt.textContent = `折射角: NaN`;       
@@ -360,7 +360,7 @@ function drawonphone(event,x,y){
                 texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
                 textr.textContent = `反射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
                 textt.textContent = `折射角: ${(thet/(Math.PI)*180).toFixed(1)}°`;
-            } else if(e1value*e2value < 0) {
+            } else if(e2value*mu2value < 0) {
                 texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
                 textr.textContent = `反射角: NaN`;
                 textt.textContent = `折射角: NaN`;       
