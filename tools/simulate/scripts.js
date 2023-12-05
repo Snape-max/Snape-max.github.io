@@ -69,9 +69,23 @@ canvas.addEventListener('touchend', (event) => {
 canvas.addEventListener('touchmove', (event) => {
     if (isdraw){
         clear();
+        var html = document.getElementsByTagName('html')[0];
+        var width = html.clientWidth;
+        var height =  html.clientHeight;
+
+        var isresize = width > height ? 0:1;
+        console.log(isresize);
         const rect = canvas.getBoundingClientRect();
-        const x = event.targetTouches[0].clientX - rect.left;
-        const y = event.targetTouches[0].clientY - rect.top;
+        var x,y;
+        console.log(event.targetTouches[0].clientX);
+        if (isresize){
+            y =  2*(width  -  event.targetTouches[0].clientX) - width/2;
+            x =  2*event.targetTouches[0].clientY - height/2  ;
+        } else {
+            x = event.targetTouches[0].clientX - rect.left;
+            y = event.targetTouches[0].clientY - rect.top;
+        }
+
         drawonphone(event,x,y);
     }
 });
