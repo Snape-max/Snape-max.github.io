@@ -63,14 +63,16 @@ canvas.addEventListener('touchstart', (event) => {
 
 canvas.addEventListener('touchend', (event) => {
     isdraw = false;
-    draw(event);
     clear();
 });
 
 canvas.addEventListener('touchmove', (event) => {
     if (isdraw){
         clear();
-        draw(event);
+        const rect = canvas.getBoundingClientRect();
+        const x = event.targetTouches[0].clientX - rect.left;
+        const y = event.targetTouches[0].clientY - rect.top;
+        drawonphone(event,x,y);
     }
 });
 
@@ -287,9 +289,191 @@ function draw(event){
             }
 
         }
+    }
+}
 
-        
+
+function drawonphone(event,x,y){
+    var thetai = incostheta(x,y);
+    var mu1 = 1;
+    var mu2 = document.getElementById("mu2").value;
+    var e1 = 1;
+    var e2 = document.getElementById("epsilon2").value;
+    var linw = 10;
+    mousex = x;
+    mousey = y;
+    console.log(`touched at: (${x}, ${y})`);
+    console.log(thetai);
+    ctx.beginPath();
+    ctx.setLineDash([1,0])
+    ctx.moveTo(x, y);
+    ctx.lineTo(400, 300);
+    ctx.closePath();
+    ctx.strokeStyle = "rgba(0,0,0,1)";
+    ctx.lineWidth = linw;
+    ctx.stroke();
+
+    if ((mu1 != '') && (mu2 != '') && (e1 != '') && (e2 != '')){
+        console.log(`(${mu1},${mu2},${e1},${e2})`)
+        var mu1value = mu1;
+        var mu2value = Number(mu2);
+        var e1value = e1;
+        var e2value = Number(e2);
+        var sint = Math.sqrt(1-thetai**2)/Math.sqrt(e2value*mu2value);
+        var cosi = thetai;
+        var sini = Math.sqrt(1-cosi**2);
+        var cost = Math.sqrt(1-sint**2);
+        var mu0 = 4*Math.PI*10e-7;
+        var e0 = 1/(36*Math.PI)*10e-9;
+        var eta1 = Math.sqrt((e0*e2value)/(mu0*mu2value));
+        var eta2 = Math.sqrt((e0*e1value)/(mu0*mu1value));
+        // 垂直极化波
+        //反射系数
+        var gamma1 = (eta2*cosi-eta1*cost)/(eta2*cosi+eta1*cost);
+        //透射系数
+        var tao1 = (2*eta2*cosi)/(eta2*cosi + eta1*cost);
+        // 水平极化波
+        var gamma2 = (eta1*cosi-eta2*cost)/(eta1*cosi+eta2*cost);
+        var tao2 = (2*eta2*cosi)/(eta1*cosi + eta2*cost);
+
+        var tani = sini/cosi;
+        var thei = Math.atan(tani);
+        var thet = Math.asin(sint);
 
 
+        if (x < 400){
+            if (e2value * mu2value != 1 && e1value*e2value >0){
+                texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
+                textr.textContent = `反射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
+                textt.textContent = `折射角: ${(thet/(Math.PI)*180).toFixed(1)}°`;
+            } else if(e1value*e2value < 0) {
+                texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
+                textr.textContent = `反射角: NaN`;
+                textt.textContent = `折射角: NaN`;       
+            } else {
+                texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
+                textr.textContent = `反射角: NaN`;
+                textt.textContent = `折射角: ${(thet/(Math.PI)*180).toFixed(1)}°`; 
+            }
+    
+    
+            text_tao1.innerHTML = `<p id="tao1">τ <sub>⊥</sub>: ${tao1.toFixed(3)}</p>`;
+            text_ga1.innerHTML = `<p id="ga1">Γ <sub>⊥</sub>: ${gamma1.toFixed(3)}</p>`;
+            text_tao2.innerHTML = `<p id="tao2">τ <sub>//</sub>: ${tao2.toFixed(3)}</p>`;
+            text_ga2.innerHTML = `<p id="ga2">Γ <sub>//</sub>: ${gamma2.toFixed(3)}</p>`;
+        }
+
+
+        console.log(`${gamma1},${tao1}`)
+
+        // 介电常数和磁导率均为正值
+        if (e2value * mu2value > 0){
+            
+            var rx,ry,tx,ty; 
+            // 媒质从介质1入射
+            if (x < 400){
+                // 第一象限
+                if (e2value > 0){
+                    if (y>=300){
+                        // 反射波
+                        rx = cal_rxy(thetai)[0];
+                        ry = cal_rxy(thetai)[1];
+                        ctx.beginPath();
+                        ctx.moveTo(400, 300);
+                        ctx.lineTo(rx, ry);
+                        ctx.closePath();
+                        ctx.strokeStyle = `rgba(255,0,0,${Math.abs(gamma1)})`;
+                        ctx.lineWidth = linw;
+                        ctx.stroke();
+                        //折射波
+                        
+                        tx = 800;
+                        ty = 300 - 400/Math.sqrt(1/sint**2-1);
+                        console.log(ty);
+                        ctx.beginPath();
+                        ctx.moveTo(400, 300);
+                        ctx.lineTo(tx, ty);
+                        ctx.closePath();
+                        ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                        ctx.lineWidth = linw;
+                        ctx.stroke();
+                    } else{
+                        // 反射波
+                        rx = cal_rxy(thetai)[0];
+                        ry = 600 - cal_rxy(thetai)[1];
+                        ctx.beginPath();
+                        ctx.moveTo(400, 300);
+                        ctx.lineTo(rx, ry);
+                        ctx.closePath();
+                        ctx.strokeStyle = `rgba(255,0,0,${Math.abs(gamma1)})`;
+                        ctx.lineWidth = linw;
+                        ctx.stroke();
+                        //折射波
+                        
+                        tx = 800;
+                        ty = 300 + 400/Math.sqrt(1/sint**2-1);
+                        console.log(ty);
+                        ctx.beginPath();
+                        ctx.moveTo(400, 300);
+                        ctx.lineTo(tx, ty);
+                        ctx.closePath();
+                        ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                        ctx.lineWidth = linw;
+                        ctx.stroke();
+                    }
+                } else {
+                // 第三象限介质
+                if (y>=300){
+                    // 反射波
+                    rx = cal_rxy(thetai)[0];
+                    ry = cal_rxy(thetai)[1];
+                    ctx.beginPath();
+                    ctx.moveTo(400, 300);
+                    ctx.lineTo(rx, ry);
+                    ctx.closePath();
+                    ctx.strokeStyle = `rgba(255,0,0,${Math.abs(gamma1)})`;
+                    ctx.lineWidth = linw;
+                    ctx.stroke();
+                    //折射波
+                    
+                    tx = 800;
+                    ty = 300 + 400/Math.sqrt(1/sint**2-1);
+
+                    console.log(ty);
+                    ctx.beginPath();
+                    ctx.moveTo(400, 300);
+                    ctx.lineTo(tx, ty);
+                    ctx.closePath();
+                    ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                    ctx.lineWidth = linw;
+                    ctx.stroke();
+                } else{
+                    // 反射波
+                    rx = cal_rxy(thetai)[0];
+                    ry = 600 - cal_rxy(thetai)[1];
+                    ctx.beginPath();
+                    ctx.moveTo(400, 300);
+                    ctx.lineTo(rx, ry);
+                    ctx.closePath();
+                    ctx.strokeStyle = `rgba(255,0,0,${Math.abs(gamma1)})`;
+                    ctx.lineWidth = linw;
+                    ctx.stroke();
+                    //折射波
+                    
+                    tx = 800;
+                    ty = 300 - 400/Math.sqrt(1/sint**2-1);
+                    console.log(ty);
+                    ctx.beginPath();
+                    ctx.moveTo(400, 300);
+                    ctx.lineTo(tx, ty);
+                    ctx.closePath();
+                    ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                    ctx.lineWidth = linw;
+                    ctx.stroke();
+                }
+                }
+            }
+
+        }
     }
 }
