@@ -56,7 +56,23 @@ canvas.addEventListener('mousemove', (event) => {
         
 });
 
+// 触摸
+canvas.addEventListener('touchstart', (event) => {
+    isdraw = true;
+});
 
+canvas.addEventListener('touchend', (event) => {
+    isdraw = false;
+    draw(event);
+    clear();
+});
+
+canvas.addEventListener('touchmove', (event) => {
+    if (isdraw){
+        clear();
+        draw(event);
+    }
+});
 
 
 function clear(){
@@ -137,27 +153,29 @@ function draw(event){
         var thet = Math.asin(sint);
 
 
-
-
-        if (e2value * mu2value != 1 && e1value*e2value >0){
-            texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
-            textr.textContent = `反射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
-            textt.textContent = `折射角: ${(thet/(Math.PI)*180).toFixed(1)}°`;
-        } else if(e1value*e2value < 0) {
-            texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
-            textr.textContent = `反射角: NaN`;
-            textt.textContent = `折射角: NaN`;       
-        } else {
-            texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
-            textr.textContent = `反射角: NaN`;
-            textt.textContent = `折射角: ${(thet/(Math.PI)*180).toFixed(1)}°`; 
+        if (x < 400){
+            if (e2value * mu2value != 1 && e1value*e2value >0){
+                texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
+                textr.textContent = `反射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
+                textt.textContent = `折射角: ${(thet/(Math.PI)*180).toFixed(1)}°`;
+            } else if(e1value*e2value < 0) {
+                texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
+                textr.textContent = `反射角: NaN`;
+                textt.textContent = `折射角: NaN`;       
+            } else {
+                texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
+                textr.textContent = `反射角: NaN`;
+                textt.textContent = `折射角: ${(thet/(Math.PI)*180).toFixed(1)}°`; 
+            }
+    
+    
+            text_tao1.innerHTML = `<p id="tao1">τ <sub>⊥</sub>: ${tao1.toFixed(3)}</p>`;
+            text_ga1.innerHTML = `<p id="ga1">Γ <sub>⊥</sub>: ${gamma1.toFixed(3)}</p>`;
+            text_tao2.innerHTML = `<p id="tao2">τ <sub>//</sub>: ${tao2.toFixed(3)}</p>`;
+            text_ga2.innerHTML = `<p id="ga2">Γ <sub>//</sub>: ${gamma2.toFixed(3)}</p>`;
         }
 
 
-        text_tao1.innerHTML = `<p id="tao1">τ <sub>⊥</sub>: ${tao1.toFixed(2)}</p>`;
-        text_ga1.innerHTML = `<p id="ga1">Γ <sub>⊥</sub>: ${gamma1.toFixed(2)}</p>`;
-        text_tao2.innerHTML = `<p id="tao2">τ <sub>//</sub>: ${tao2.toFixed(2)}</p>`;
-        text_ga2.innerHTML = `<p id="ga2">Γ <sub>//</sub>: ${gamma2.toFixed(2)}</p>`;
         console.log(`${gamma1},${tao1}`)
 
         // 介电常数和磁导率均为正值
