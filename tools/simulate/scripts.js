@@ -170,7 +170,7 @@ function draw(event){
 
 
         if (x < 400){
-            if (e2value * mu2value != 1 && e1value*e2value >0){
+            if (e2value * mu2value != 1 && e2value*mu2value >0){
                 texti.textContent = `入射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
                 textr.textContent = `反射角: ${(thei/(Math.PI)*180).toFixed(1)}°`;
                 textt.textContent = `折射角: ${(thet/(Math.PI)*180).toFixed(1)}°`;
