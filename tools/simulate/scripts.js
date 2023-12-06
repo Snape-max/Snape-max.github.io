@@ -222,7 +222,7 @@ function draw(event){
                         ctx.moveTo(400, 300);
                         ctx.lineTo(tx, ty);
                         ctx.closePath();
-                        ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                        ctx.strokeStyle = `rgba(0,0,255,${Math.abs(tao1)})`;
                         ctx.lineWidth = linw;
                         ctx.stroke();
                     } else{
@@ -245,7 +245,7 @@ function draw(event){
                         ctx.moveTo(400, 300);
                         ctx.lineTo(tx, ty);
                         ctx.closePath();
-                        ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                        ctx.strokeStyle = `rgba(0,0,255,${Math.abs(tao1)})`;
                         ctx.lineWidth = linw;
                         ctx.stroke();
                     }
@@ -272,7 +272,7 @@ function draw(event){
                     ctx.moveTo(400, 300);
                     ctx.lineTo(tx, ty);
                     ctx.closePath();
-                    ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                    ctx.strokeStyle = `rgba(0,0,255,${Math.abs(tao1)})`;
                     ctx.lineWidth = linw;
                     ctx.stroke();
                 } else{
@@ -295,7 +295,7 @@ function draw(event){
                     ctx.moveTo(400, 300);
                     ctx.lineTo(tx, ty);
                     ctx.closePath();
-                    ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                    ctx.strokeStyle = `rgba(0,0,255,${Math.abs(tao1)})`;
                     ctx.lineWidth = linw;
                     ctx.stroke();
                 }
@@ -408,7 +408,7 @@ function drawonphone(event,x,y){
                         ctx.moveTo(400, 300);
                         ctx.lineTo(tx, ty);
                         ctx.closePath();
-                        ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                        ctx.strokeStyle = `rgba(0,0,255,${Math.abs(tao1)})`;
                         ctx.lineWidth = linw;
                         ctx.stroke();
                     } else{
@@ -431,7 +431,7 @@ function drawonphone(event,x,y){
                         ctx.moveTo(400, 300);
                         ctx.lineTo(tx, ty);
                         ctx.closePath();
-                        ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                        ctx.strokeStyle = `rgba(0,0,255,${Math.abs(tao1)})`;
                         ctx.lineWidth = linw;
                         ctx.stroke();
                     }
@@ -458,7 +458,7 @@ function drawonphone(event,x,y){
                     ctx.moveTo(400, 300);
                     ctx.lineTo(tx, ty);
                     ctx.closePath();
-                    ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                    ctx.strokeStyle = `rgba(0,0,255,${Math.abs(tao1)})`;
                     ctx.lineWidth = linw;
                     ctx.stroke();
                 } else{
@@ -481,7 +481,7 @@ function drawonphone(event,x,y){
                     ctx.moveTo(400, 300);
                     ctx.lineTo(tx, ty);
                     ctx.closePath();
-                    ctx.strokeStyle = `rgba(0,0,255,${tao1})`;
+                    ctx.strokeStyle = `rgba(0,0,255,${Math.abs(tao1)})`;
                     ctx.lineWidth = linw;
                     ctx.stroke();
                 }
