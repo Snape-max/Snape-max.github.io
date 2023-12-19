@@ -1393,13 +1393,53 @@ input[type=checkbox]{vertical-align:middle;height:1.19rem;width:1.5rem;}
                          background-color: #181C20 !important;
                      }
                  }
-                 </style></head>  
+                 </style>
+
+    <style>
+                    /* 侧边栏 */
+        .sidebar a {
+        user-select: none;
+        font-family: "Comic Sans MS", cursive, sans-serif; 
+        font-size: 100px;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        transition: color 0.3s ease;
+        position: absolute; 
+        left: -80px; /* 将它们放在屏幕之外 */
+        transition: 0.3s; /* 在悬停时添加过渡 */
+        padding: 15px; /* 15px 内边距 */
+        width: 100px; /* 设置特定宽度 */
+        text-decoration: none; /* 删除下划线 */
+        font-size: 20px; /* 增加字体大小 */
+        color: rgba(255, 255, 255, 0); /* 白色文本颜色 */
+        border-radius: 0 5px 5px 0; /* 右上角和右下角的圆角 */
+        z-index: 1;
+        text-align: left;
+        }
+
+
+        .sidebar a:hover {
+        text-align: center;
+        left: 0; 
+        color: white;
+        }
+
+        #return {
+        top:40px;
+        background-color: #4c6aaf;
+        }
+</style>
+</head>  
 
 
 
 
 
 <body bgcolor="#f7f7f0" onload="ifnight();start();">
+    <div class="sidebar">
+        <a id="return" href="../../tools.html" class="choice">Return</a>
+    </div>
 <center>
 <div style="margin-top:0.8rem;">
 <b>扫雷</b>

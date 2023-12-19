@@ -74,14 +74,9 @@ body {
   color: white;
 }
 
-#code {
-  top:80px;
-  background-color: #af514c;
-}
-
-#Plot {
-  top:160px;
-  background-color: #af934c;
+#return {
+  top:40px;
+  background-color: #4c6aaf;
 }
 
 .content{
@@ -108,6 +103,8 @@ body {
 }
 
 .p1{
+  position: absolute;
+  left: 80px;
   user-select: none;
   font-size: 20px;
   font-family: 'Courier New', Courier, monospace;
@@ -118,7 +115,7 @@ body {
 #content-1 select{
   height: 34px;
   width: 102px;
-  position: relative;
+  position: absolute;
   background-color: #007aff;
   font-size: 20px;
   font-family: 'Courier New', Courier, monospace;
@@ -129,18 +126,37 @@ body {
   border-width: 1px;
   color: white;
   top: 0;
+  left: 10px;
   text-align: center;
   margin-right: 10px;
 }
 
+#plot{
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  height: 34px;
+  width: 60px;
+  background-color: #007aff;
+  color: white;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 5px;
+  border-color: rgb(202, 201, 201);
+  border-width: 2px;
+  position: absolute;
+  right: 30px;
+}
+
 .open {
-  position: relative;
+  position: absolute;
   display: flex;
   justify-content: center;
   margin-left: 10px;
   align-items: center;
   height: 34px;
   width: 60px;
+  top: 0;
+  left: 200px;
   transition: background-color 0.5s ease;
   font-size: 16px;
 }
@@ -197,13 +213,11 @@ input:checked + .slider:before {
 .choose{
   position: absolute;
   height: 10%;
-  width: 30%;
-  text-align: center;
+  width: 100%;
   left: 0;
   right: 0;
   top: 10px;
   margin: auto;
-  display: flex;
 }
 
 #content-2{
@@ -212,7 +226,7 @@ input:checked + .slider:before {
   display: none;
   left: 0;
   top: 0;
-  height: 60%;
+  height: 80%;
   width: min-content;
 }
 
@@ -230,7 +244,7 @@ input:checked + .slider:before {
   width: 65%;
   height: 65%;
   margin: auto;
-  left: -200%;
+  left: 0;
   right: 0;
   top: 0;
   bottom: 0;
@@ -316,3 +330,4 @@ li{
 #content-2header button:hover{
   background-color: rgba(255, 77, 0, 0.726);
 }
+

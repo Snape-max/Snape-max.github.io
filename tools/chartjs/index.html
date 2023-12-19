@@ -5,11 +5,12 @@
     <title>Chart.js</title>
     <link rel="stylesheet" href="./style.css" />
 </head>
-<body onload="load()">
+<body>
+
     <div class="sidebar">
-        <a id="code" onclick="show(1)" class="choice">Code</a>
-        <a id="Plot" onclick="show(2)&plot()" class="choice">Plot</a>
+        <a id="return" href="../../tools.html" class="choice">Return</a>
     </div>
+
     <div class="main">
         <div id="content-1" class="content">
             <div class="choose">
@@ -30,18 +31,18 @@
                         <span class="slider"></span>
                     </label>
                 </div>
+                <button id="plot" onclick="show(2)&plot()">Plot</button>
             </div>
-        </div>
-
-        <div id="data-1" class="data">
-            <br>
-            <br>
-            <li>
-                <textarea id="labels" cols="30" rows="10" placeholder="输入labels信息: 使用空格分隔" class="data-content">red blue pink white orange</textarea>
-            </li>
-            <li>
-                <textarea id="values" cols="30" rows="10" placeholder="输入values轴信息：每组数据用逗号分隔；组间数据用空格分隔，每组第一个数据为数据集的名称" class="data-content">Liking 5 2 3 4 6</textarea>
-            </li>
+            <div id="data-1" class="data">
+                <br>
+                <br>
+                <li>
+                    <textarea id="labels" cols="30" rows="10" placeholder="输入labels信息: 使用空格分隔" class="data-content">red blue pink white orange</textarea>
+                </li>
+                <li>
+                    <textarea id="values" cols="30" rows="10" placeholder="输入values轴信息：每组数据用逗号分隔；组间数据用空格分隔，每组第一个数据为数据集的名称" class="data-content">Liking 5 2 3 4 6</textarea>
+                </li>
+            </div>
         </div>
 
         <div id="content-2" class="content">
@@ -53,22 +54,7 @@
     </div>
 </body>
 
-<script>
-    function load(){
-        var choices = document.getElementsByClassName("choice");
-        var content = document.getElementsByClassName("content");
-        const topc = 100;
-        const gap = 90;
-        choices[0].style.top = topc + "px";
-        content[0].style.left = "0";
-        for(var i=1;i<choices.length;i++){
-            choices[i].style.top = topc+gap*i + "px";
-            content[i].style.display  = "none";
-        }
-        var data = document.getElementById("data-1");
-        data.style.left = "0";
-    }
-</script>
+
 
 
 <script>
