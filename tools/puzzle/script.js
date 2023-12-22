@@ -207,10 +207,10 @@ function regEvent(){
 var isshow = 0;
 function showAnswer(){
     if (isshow){
-        answer.style.right = "-50%";
+        answer.style.display = "none";
         isshow = 0;
     } else {
-        answer.style.right = "10";
+        answer.style.display = "block";
         isshow = 1;
     }
     
