@@ -326,6 +326,20 @@ li{
   border: #d3e6fb66;
 }
 
+#download{
+  position: absolute;
+  right: 40px;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  font-size: 20px;
+  color: white;
+  background-color: #5aa5f6;
+  text-align: center;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: #d3e6fb66;
+}
 
 #content-2header button:hover{
   background-color: rgba(255, 77, 0, 0.726);
