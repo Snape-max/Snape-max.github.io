@@ -88,6 +88,8 @@ body {
 
 #answer{
     position: absolute;
+    left: 0;
+    right: 0;
     margin: auto;
     background-color: rgba(250, 235, 215, 0.733);
     transition: color 0.3s ease;
@@ -101,7 +103,7 @@ body {
 
 #settings{
     position: absolute;
-    top:60px;
+    top:40px;
     margin: auto;
 }
 
