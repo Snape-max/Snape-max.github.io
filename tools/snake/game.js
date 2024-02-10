@@ -5,9 +5,31 @@ var world = document.getElementById("snake").getContext('2d');
 var SnakeLength = 5;
 var Position = [[10,10],[10,11],[10,12],[10,13],[10,14]];
 var Panel = document.getElementById("panel");
+var ISPHONE;
 
+var os = function() {
+    var ua = navigator.userAgent,
+        isWindowsPhone = /(?:Windows Phone)/.test(ua),
+        isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,
+        isAndroid = /(?:Android)/.test(ua),
+        isFireFox = /(?:Firefox)/.test(ua),
+        isChrome = /(?:Chrome|CriOS)/.test(ua),
+        isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox && /(?:Tablet)/.test(ua)),
+        isPhone = /(?:iPhone)/.test(ua) && !isTablet,
+        isPc = !isPhone && !isAndroid && !isSymbian;
+    return {
+        isTablet: isTablet,
+        isPhone: isPhone,
+        isAndroid: isAndroid,
+        isPc: isPc
+    };
+}();
 
-
+if(os.isAndroid || os.isPhone) {
+    ISPHONE = 1;
+} else {
+    ISPHONE = 0;
+}
 
 var GameConfig = {
     StartFlag: 0,
@@ -71,25 +93,22 @@ function MapCreate(){
     pen.lineWidth = 8;
     pen.stroke();
 
-    // for(let i = 0;i<=MapHeight;){
-    //     pen.moveTo(0, i);
-    //     pen.lineTo(900,i);
-    //     pen.closePath();
-    //     pen.lineWidth = 1;
-    //     pen.strokeStyle = "black";
-    //     pen.stroke();
-    //     i = i + 20;
-    // }
-
-    // for(let i = 0;i<=MapWidth;){
-    //     pen.moveTo(i, 0);
-    //     pen.lineTo(i,600);
-    //     pen.closePath();
-    //     pen.lineWidth = 0.5;
-    //     pen.strokeStyle = "black";
-    //     pen.stroke();
-    //     i = i + 20;
-    // }
+    if(ISPHONE){
+        canvas.style.bottom = "50%";
+        c2.style.bottom = "50%"
+        Pstyle.bottom = "50%"
+        var Control = document.getElementById("control");
+        var Cstyle = Control.style;
+        Cstyle.height = MapHeight;
+        Cstyle.width = MapWidth;
+        Cstyle.top = "50%"
+        Cstyle.left = 0;
+        Cstyle.right = 0;
+        Cstyle.bottom = 0;
+        Cstyle.margin = "auto";
+        Cstyle.position = "absolute"
+        Cstyle.display = "block";
+    }
 
 }
 
@@ -126,19 +145,6 @@ function initGame(){
     MapCreate();
     DrawSnake();
 }
-
-function debounce(func, wait) {
-    let timeoutId;
-    return function(...args) {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      timeoutId = setTimeout(() => {
-        func.apply(this, args);
-      }, wait);
-    };
-  }
-
 
 function RegEvent(){
     document.onkeydown=function(e){    //对整个页面监听 
@@ -218,7 +224,7 @@ function FoodSummon(){
     var y = AllXY[XYindex][1]; 
 
     FoodConfig.Foodxy = [x, y];
-    console.log(AllXY);
+
 
 }
 
@@ -235,7 +241,7 @@ function DrawFood(){
 
 // 游戏主循环
 function GameLoop(){
-    
+
 
     if (GameConfig.StartFlag){
         Panel.style.display = "none"
@@ -327,6 +333,7 @@ function GameRun(){
     initGame();
     RegEvent();
     var Timer = window.setInterval(GameLoop, 250);
+    console.log(ISPHONE);
 }
 
 GameRun();
