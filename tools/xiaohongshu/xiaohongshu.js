@@ -4,6 +4,17 @@ var picarea = document.getElementById("pic");
 var result = document.getElementById("result");
 var description = document.getElementById("description");
 
+var ci = "http://ci.xiaohongshu.com/";
+var hw = "https://sns-img-hw.xhscdn.com/";
+var qc = "https://sns-img-qc.xhscdn.com/";
+
+var rawformat = "?imageView2/2/w/1080/format/jpg";
+var webformat = "?imageView2/2/w/120/format/jpg";
+
+
+
+
+
 function Parser(type, link) {
     const url = `${api}/${type}/${link}`;
     
@@ -27,7 +38,7 @@ function Parser(type, link) {
             for (let i=0;i<data.images.length;i++){
                 // imgHtml += `<a href='${data.images[i]}' download>图片${i+1}, 点击下载</a>`;
                 imgHtml += 
-                `<a href='${data.images[i]}' download><img src='${data.images[i].replace("1080", "120")}' href='${data.images[i]}'></a>`;
+                `<a href='${ci + data.images[i] + rawformat}' target='_blank'><img src='${ci + data.images[i] + webformat}' href='${data.images[i]}'></a>`;
             }
 
             picarea.innerHTML =  imgHtml;
@@ -64,6 +75,9 @@ document.getElementById("btn").addEventListener('click', () => {
         } else if (url.includes("xiaohongshu.com/explore")){
             link = url.match(/explore\/([^?]+)/)[1];
             type = "long";
+        } else if (url.includes("xiaohongshu.com/discovery/item/")) {
+          link = url.match(/item\/([^?]+)/)[1];
+          type = "long";
         }
 
         if (link){
