@@ -8,7 +8,7 @@ var ci = "http://ci.xiaohongshu.com/";
 var hw = "https://sns-img-hw.xhscdn.com/";
 var qc = "https://sns-img-qc.xhscdn.com/";
 
-var rawformat = "?imageView2/2/w/1080/format/jpg";
+var rawformat = "?imageView2/2/w/10000/format/jpg";
 var webformat = "?imageView2/2/w/120/format/jpg";
 
 
