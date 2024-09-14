@@ -4,6 +4,7 @@ api = "https://xiaohongshuapi1-z6j647l4.b4a.run/api/v1/image"
 var picarea = document.getElementById("pic");
 var result = document.getElementById("result");
 var description = document.getElementById("description");
+var info = document.getElementById("info");
 
 var ci = "http://ci.xiaohongshu.com/";
 var hw = "https://sns-img-hw.xhscdn.com/";
@@ -17,6 +18,7 @@ var webformat = "?imageView2/2/w/120/format/jpg";
 
 
 function Parser(link) {
+    info.innerHTML = `<h2>正在解析...</h2>`;
     const url = `${api}/${link}`;
     
     // 返回一个Promise，以便外部可以处理解析后的数据
@@ -24,6 +26,7 @@ function Parser(link) {
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP 错误：${response.status}`);
+          info.innerHTML = `<h2>解析失败</h2>`;
         }
         // 使用return关键字返回解析后的JSON数据
         return response.json();
@@ -31,7 +34,7 @@ function Parser(link) {
       .then((data) => {
         // 确保数据中有images属性再返回
         if (data && data.images) {
-
+            info.innerHTML = "";
             result.style.display = "block";
             console.log(data.images);
             console.log(data.description);
@@ -47,10 +50,12 @@ function Parser(link) {
 
 
         } else {
+          info.innerHTML = `<h2>未找到图片</h2>`;
           throw new Error('No images found in the API response');
         }
       })
       .catch((error) => {
+        info.innerHTML = `<h2>解析失败</h2>`;
         console.error('There was an error fetching the data:', error);
         throw error; // 抛出错误以在外部捕获
       });
@@ -59,7 +64,7 @@ function Parser(link) {
 
 document.getElementById("btn").addEventListener('click', () => {
     var text = document.getElementById("data").value;
-    var info = document.getElementById("info");
+    
     var url = text.match(/(https?:\/\/|ftp:\/\/)[^\"'\s]+/g);
     console.log(url);
     console.log(encodeURIComponent(url));
