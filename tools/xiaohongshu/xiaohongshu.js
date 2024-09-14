@@ -1,5 +1,5 @@
 api = "https://xiaohongshuapi1-z6j647l4.b4a.run/api/v1/image"
-api = "http://127.0.0.1:5000/api/v1/image"
+// api = "http://127.0.0.1:5000/api/v1/image"
 
 var picarea = document.getElementById("pic");
 var result = document.getElementById("result");
