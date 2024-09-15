@@ -18,6 +18,7 @@ var webformat = "?imageView2/2/w/120/format/jpg";
 
 
 function Parser(link) {
+    result.style.display = "none";
     info.innerHTML = `<h2>正在解析...</h2>`;
     const url = `${api}/${link}`;
     
@@ -25,8 +26,8 @@ function Parser(link) {
     return fetch(url)
       .then((response) => {
         if (!response.ok) {
+          info.innerHTML = `<h2>网络错误</h2>`;
           throw new Error(`HTTP 错误：${response.status}`);
-          info.innerHTML = `<h2>解析失败</h2>`;
         }
         // 使用return关键字返回解析后的JSON数据
         return response.json();
