@@ -80,7 +80,7 @@ function time_core(){
     s = (s + 1) % 60;
     m = (m + (s==0)) % 60;
     h = (h + (m==0 && s==0)) % 12;
-    if (s == 0 && m == 0) {
+    if (s == 0) {
         get_time();
     }
 }
