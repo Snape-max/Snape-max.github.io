@@ -1,3 +1,5 @@
+import astar from "./astar.js"
+
 var MapHeight = 600;
 var MapWidth = 900;
 var pen = document.getElementById("canvas").getContext('2d');
@@ -6,6 +8,9 @@ var SnakeLength = 5;
 var Position = [[10,10],[10,11],[10,12],[10,13],[10,14]];
 var Panel = document.getElementById("panel");
 var ISPHONE;
+var Map = new Array(32).fill(0).map(() => new Array(47).fill(0));
+var isAi = 0;
+var Timer;
 
 var os = function() {
     var ua = navigator.userAgent,
@@ -118,7 +123,7 @@ function MapCreate(){
 function DrawSnake(){
     for(let i=0;i<SnakeLength;i++){
         world.fillStyle = "red";
-        world.fillRect(20*Position[i][0],20*Position[i][1],20,20);
+        world.fillRect(20*Position[i][0]+1,20*Position[i][1]+1,20,20);
     }
 
     world.fillStyle = "black";
@@ -188,6 +193,10 @@ function RegEvent(){
                             GameConfig.SnakeDirection = 0;
                         }
                     }
+                    else if(keyNum == 73){
+                        isAi = !isAi;
+                        setupTimer();
+                    }
                     
                 }
             }, "1");
@@ -242,7 +251,6 @@ function DrawFood(){
 // 游戏主循环
 function GameLoop(){
 
-
     if (GameConfig.StartFlag){
         Panel.style.display = "none"
         Panel.innerHTML = "";
@@ -281,6 +289,7 @@ function GameLoop(){
             } else {
                 Position.unshift([NextStepX,NextStepY]);
                 SnakeLength += 1;
+                FoodConfig.IsEaten = 0;
             }
         } 
 
@@ -294,46 +303,83 @@ function GameLoop(){
         
     } else {
         Panel.style.display = "block";
-        Panel.innerHTML = "<P>SPACE 开始/暂停游戏</P><p>WASD 控制方向</p>"
+        Panel.innerHTML = "<P>SPACE 开始/暂停游戏</P><p>WASD 控制方向</p><p>I AI托管</p>"
     }
 
     if(GameConfig.Stopflag == 1){
 
         Panel.style.display = "block";
-        Panel.innerHTML = "<h1>NO GAME OVER</h1><p>SCORE: "+(SnakeLength-5)+"</p><button onclick='location.reload();'>重新开始</button>";
+        Panel.innerHTML = "<h1>NO GAME OVER</h1><p>SCORE: "+(SnakeLength-5)+"</p><button onclick=location.reload();>重新开始</button>";
 
-    }
-
-    if(FoodConfig.IsSummon == 0){
-        FoodSummon();
-        FoodConfig.IsSummon = 1;
-        FoodConfig.IsEaten = 0;
-    }
-
-    if(FoodConfig.IsEaten == 0){
-        DrawFood();
-    } else {
-        FoodConfig.IsSummon = 0;
     }
 
     if(InPosition(Position,FoodConfig.Foodxy) != -1){
         FoodConfig.IsEaten = 1;
+        FoodConfig.IsSummon = 0;
     }
 
+    if (GameConfig.Stopflag == 0){
+        if(FoodConfig.IsSummon == 0){
+            FoodSummon();
+            DrawFood();
+            FoodConfig.IsSummon = 1;
+        }
+
+        if(FoodConfig.IsEaten == 0){
+            DrawFood();
+        } 
+        if (isAi){
+            aiPlay();
+        }
+        
+}
     DrawSnake();
-
-
-
 
 }
 
+function nextStep(p1, p2) {
+    let dif_x = p2[0] - p1[0];
+    let dif_y = p2[1] - p1[1];
+    if (dif_x > 0) {
+        return 0;
+    } else if (dif_x < 0) {
+        return 1;
+    } else if (dif_y > 0) {
+        return 2;
+    } else if (dif_y < 0) {
+        return 3;
+    }
+}
 
+function aiPlay() {
+    Map = new Array(32).fill(0).map(() => new Array(47).fill(0));
+    for(let i=0;i<Position.length;i++){
+        Map[Position[i][1]+1][Position[i][0]+1] = 1;
+    }
+    // console.log("food at " + FoodConfig.Foodxy[0]+","+FoodConfig.Foodxy[1])
+    var path = astar([Position[0][0] + 1, Position[0][1] + 1],[FoodConfig.Foodxy[0]+1,FoodConfig.Foodxy[1]+1],Map);
+    // console.log(path)
+    if (path.length != 1) {
+        let nextdirection = nextStep(path[0],path[1]);
+        GameConfig.SnakeDirection = nextdirection;
+    } 
+}
+
+function setupTimer() {
+    if (Timer) {
+        clearInterval(Timer); // 清除之前的定时器
+    }
+    if (isAi) {
+        Timer = window.setInterval(GameLoop, 10); // 对于AI使用更快的间隔
+    } else {
+        Timer = window.setInterval(GameLoop, 250); // 对于非AI使用较慢的间隔
+    }
+}
 
 function GameRun(){
     initGame();
     RegEvent();
-    var Timer = window.setInterval(GameLoop, 250);
-    console.log(ISPHONE);
+    setupTimer();
 }
 
 GameRun();
