@@ -11,7 +11,22 @@ var Panel = document.getElementById("panel");
 var ISPHONE;
 var Map = new Array(30).fill(0).map(() => new Array(45).fill(0));
 var isAi = 0;
+var isclear = 0;
 var Timer;
+
+function r(direction, num){
+    return {
+        d: direction,
+        n: num
+    };
+}
+
+let simple_path_pre = [r(3, 10), r(0, 34)];
+let simple_path_head = [r(2, 29), r(1, 44)];
+let simple_path_body = [r(3, 1), r(0, 43), r(3, 1), r(1, 43)];
+let simple_path_tail = [r(3, 1), r(0, 44)];
+
+
 
 var os = function() {
     var ua = navigator.userAgent,
@@ -174,9 +189,13 @@ function RegEvent(){
                 // Space: Game Start and Stop
                 if(keyNum==32){  
                     GameConfig.StartFlag = (GameConfig.StartFlag==0);
-
-                
                 } 
+                if (keyNum == 13) { // egg
+                    GameConfig.StartFlag = 1;
+                    console.log("debug");
+                    isclear = 1;
+                    setupTimer();
+                }
 
                 if( GameConfig.StartFlag){
 
@@ -328,7 +347,7 @@ function GameLoop(){
         FoodConfig.IsSummon = 0;
     }
 
-    if (GameConfig.Stopflag == 0){
+    if (GameConfig.Stopflag == 0 && GameConfig.StartFlag){
         if(FoodConfig.IsSummon == 0){
             FoodSummon();
             DrawFood();
@@ -338,8 +357,11 @@ function GameLoop(){
         if(FoodConfig.IsEaten == 0){
             DrawFood();
         } 
-        if (isAi){
+        if (isAi && !isclear){
             aiPlay();
+        }
+        if (isclear){
+            clear();
         }
         
 }
@@ -360,6 +382,48 @@ function nextStep(p1, p2) {
         return 3;
     }
 }
+
+function prepareRoad(){
+    let road = [];
+    for(let i=0;i<simple_path_head.length;i++){
+        for (let s = simple_path_head[i].n;s>0;s--){
+            road.push(simple_path_head[i].d);
+        }
+    }
+    for (let k=0;k<14;k++){
+        for(let i=0;i<simple_path_body.length;i++){
+            for (let s = simple_path_body[i].n;s>0;s--){
+                road.push(simple_path_body[i].d);
+            }
+        }
+    }
+    for(let i=0;i<simple_path_tail.length;i++){
+        for (let s = simple_path_tail[i].n;s>0;s--){
+            road.push(simple_path_tail[i].d);
+        }
+    }
+    return road;
+
+}
+var cyclecnt = 0;
+var road = prepareRoad();
+let cycle = 0;
+console.log(road);
+function clear(){
+    
+    if (cycle == 0){
+        cyclecnt++;
+        console.log(cyclecnt);
+        if (cyclecnt < 10) GameConfig.SnakeDirection = 3;
+        if (cyclecnt >= 10) GameConfig.SnakeDirection = 0;
+        if (cyclecnt == 43) {cycle = 1; cyclecnt=0};
+    } else {
+        GameConfig.SnakeDirection = road[cyclecnt];
+        cyclecnt = (cyclecnt+1)%road.length;
+    }
+    
+}
+
 
 function aiPlay() {
     Map = new Array(30).fill(0).map(() => new Array(45).fill(0));
@@ -443,7 +507,10 @@ function setupTimer() {
     }
     if (isAi) {
         Timer = window.setInterval(GameLoop, 10); // 对于AI使用更快的间隔
-    } else {
+    } else if (isclear){
+        Timer = window.setInterval(GameLoop, 1);
+    }
+    else {
         Timer = window.setInterval(GameLoop, 250); // 对于非AI使用较慢的间隔
     }
 }
