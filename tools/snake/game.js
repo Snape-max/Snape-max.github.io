@@ -1,4 +1,5 @@
 import astar from "./astar.js"
+import createRainbow from "./color.js";
 
 var MapHeight = 600;
 var MapWidth = 900;
@@ -94,7 +95,7 @@ function MapCreate(){
     pen.lineTo(908,0);
     pen.lineTo(0,0);
     pen.closePath();
-    pen.strokeStyle = "black";
+    pen.strokeStyle = "#d9faff";
     pen.lineWidth = 8;
     pen.stroke();
 
@@ -120,20 +121,30 @@ function MapCreate(){
 
 
 // 绘制贪吃龙
-function DrawSnake(){
-    for(let i=0;i<SnakeLength;i++){
-        world.fillStyle = "red";
-        world.fillRect(20*Position[i][0],20*Position[i][1]+1,20,20);
+function DrawSnake() {
+    // 生成彩虹渐变色
+    let colors = createRainbow(Position.length);
+
+    for (let i = 0; i < SnakeLength; i++) {
+        // 设置填充样式为当前颜色
+        world.fillStyle = `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`;
+        // 绘制蛇的身体
+        world.fillRect(20 * Position[i][0], 20 * Position[i][1] + 1, 20, 20);
+        
+        // 添加阴影效果（可选）
+        world.strokeStyle = "white";
+        world.strokeRect(20 * Position[i][0], 20 * Position[i][1] + 1, 20, 20);
     }
 
+    // 绘制蛇头的眼睛
     world.fillStyle = "black";
     world.fillRect(20*Position[0][0]+3,20*Position[0][1]+5,5,5);
     world.fillRect(20*Position[0][0]+12,20*Position[0][1]+5,5,5);
 
-    world.fillStyle = "coral"
-    world.fillRect(20*Position[0][0]+3,20*Position[0][1]-5,5,5);
-    world.fillRect(20*Position[0][0]+12,20*Position[0][1]-5,5,5);
-
+    // 绘制舌头
+    world.fillStyle = "coral";
+    world.fillRect(20 * Position[0][0] + 3, 20 * Position[0][1] - 5, 5, 5);
+    world.fillRect(20 * Position[0][0] + 12, 20 * Position[0][1] - 5, 5, 5);
 }
 
 // 清除蛇
@@ -408,7 +419,7 @@ function aiPlay() {
             }
         }
     } else if (path.length == 1) { // 吃不到食物
-        console.log("eat tail")
+        // console.log("eat tail")
         Map = new Array(30).fill(0).map(() => new Array(45).fill(0));
         for(let i=0;i<Position.length-1;i++){
             Map[Position[i][1]][Position[i][0]] = 1;
@@ -417,7 +428,7 @@ function aiPlay() {
         // 如果真蛇能吃到自己的尾巴，就直接吃
         if (path.length == 1){ // 否则就 wander
             let cnt = 0;
-            console.log("Random Pos")
+            // console.log("Random Pos")
             while(path.length == 1 && cnt < Position.length) {path = astar(Position[0],RandomPos(),Map);cnt++;}
         }
 
