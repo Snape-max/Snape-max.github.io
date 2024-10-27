@@ -8,7 +8,7 @@ var SnakeLength = 5;
 var Position = [[10,10],[10,11],[10,12],[10,13],[10,14]];
 var Panel = document.getElementById("panel");
 var ISPHONE;
-var Map = new Array(32).fill(0).map(() => new Array(47).fill(0));
+var Map = new Array(30).fill(0).map(() => new Array(45).fill(0));
 var isAi = 0;
 var Timer;
 
@@ -123,7 +123,7 @@ function MapCreate(){
 function DrawSnake(){
     for(let i=0;i<SnakeLength;i++){
         world.fillStyle = "red";
-        world.fillRect(20*Position[i][0]+1,20*Position[i][1]+1,20,20);
+        world.fillRect(20*Position[i][0],20*Position[i][1]+1,20,20);
     }
 
     world.fillStyle = "black";
@@ -218,8 +218,7 @@ function InPosition(arr, subArr){
 }
 
 
-function FoodSummon(){
-
+function RandomPos(){
     var AllXY = [];
     for(let i=0;i<45;i++){
         for (let k=0;k<30;k++){
@@ -231,10 +230,11 @@ function FoodSummon(){
     var XYindex = Math.floor(Math.random()*AllXY.length);
     var x = AllXY[XYindex][0];
     var y = AllXY[XYindex][1]; 
+    return [x, y];
+}
 
-    FoodConfig.Foodxy = [x, y];
-
-
+function FoodSummon(){
+    FoodConfig.Foodxy = RandomPos();
 }
 
 function DrawFood(){
@@ -275,7 +275,8 @@ function GameLoop(){
                 break;
         }
 
-        if(InPosition(Position, [NextStepX, NextStepY]) != -1){
+        if((InPosition(Position, [NextStepX, NextStepY]) != -1) 
+            && ((NextStepX != Position[Position.length-1][0]) && (NextStepY != Position[Position.length-1][1]))){
             GameConfig.Stopflag = 1;
         }
         if (GameConfig.Stopflag == 0){
@@ -294,22 +295,20 @@ function GameLoop(){
         } 
 
         // 边界判断
-        Position[0][0] = Position[0][0] % 45;
-        Position[0][1] = Position[0][1] % 30;
-
-        if(Position[0][0] < 0) Position[0][0] = 45 + Position[0][0];
-        if(Position[0][1] < 0) Position[0][1] = 30 + Position[0][1];
+        if (NextStepX < 0 || NextStepX >= 45 || NextStepY < 0 || NextStepY >= 30){
+            GameConfig.Stopflag = 1;
+        }
 
         
     } else {
         Panel.style.display = "block";
-        Panel.innerHTML = "<P>SPACE 开始/暂停游戏</P><p>WASD 控制方向</p><p>I AI托管</p>"
+        Panel.innerHTML = "<P>SPACE 开始/暂停游戏</P><p>WASD 控制方向</p><p>AI托管请按 I</p>"
     }
 
     if(GameConfig.Stopflag == 1){
-
+        DrawFood();
         Panel.style.display = "block";
-        Panel.innerHTML = "<h1>NO GAME OVER</h1><p>SCORE: "+(SnakeLength-5)+"</p><button onclick=location.reload();>重新开始</button>";
+        Panel.innerHTML = "<h1>NO GAME OVER</h1><p>SCORE: "+(SnakeLength-5)+"</p><p>重新开始请刷新</p>";
 
     }
 
@@ -352,17 +351,79 @@ function nextStep(p1, p2) {
 }
 
 function aiPlay() {
-    Map = new Array(32).fill(0).map(() => new Array(47).fill(0));
+    Map = new Array(30).fill(0).map(() => new Array(45).fill(0));
     for(let i=0;i<Position.length;i++){
-        Map[Position[i][1]+1][Position[i][0]+1] = 1;
+        Map[Position[i][1]][Position[i][0]] = 1;
     }
-    // console.log("food at " + FoodConfig.Foodxy[0]+","+FoodConfig.Foodxy[1])
-    var path = astar([Position[0][0] + 1, Position[0][1] + 1],[FoodConfig.Foodxy[0]+1,FoodConfig.Foodxy[1]+1],Map);
-    // console.log(path)
-    if (path.length != 1) {
-        let nextdirection = nextStep(path[0],path[1]);
-        GameConfig.SnakeDirection = nextdirection;
+    var path = astar(Position[0],FoodConfig.Foodxy,Map);
+
+    if (path.length != 1){ // 可以吃到食物
+        var fakeSnake = Position;
+        while(InPosition(fakeSnake,FoodConfig.Foodxy) != -1){
+            Map = new Array(30).fill(0).map(() => new Array(45).fill(0));
+            for(let i=0;i<fakeSnake.length;i++){
+                Map[fakeSnake[i][1]][fakeSnake[i][0]] = 1;
+            }
+            var fakepath = astar(fakeSnake[0],FoodConfig.Foodxy,Map);
+            let nextdirection = nextStep(fakepath[0],fakepath[1]);
+            let NextStepX = fakeSnake[0][0], NextStepY = fakeSnake[0][1];
+            switch (nextdirection) {
+                case 0:
+                    NextStepX += GameConfig.SnakeSpeed;
+                    break;
+                case 1:
+                    NextStepX -= GameConfig.SnakeSpeed;
+                    break;
+        
+                case 2:
+                    NextStepY += GameConfig.SnakeSpeed;
+                    break;
+                
+                case 3:
+                    NextStepY -= GameConfig.SnakeSpeed;
+                    break;
+                default:
+                    break;
+            }
+            for(let i = SnakeLength-1; i >= 1;i--){
+                fakeSnake[i][0] = fakeSnake[i-1][0];
+                fakeSnake[i][1] = fakeSnake[i-1][1];
+            }
+            fakeSnake[0][0] = NextStepX;
+            fakeSnake[0][1] = NextStepY;
+        }
+        Map = new Array(30).fill(0).map(() => new Array(45).fill(0));
+        for(let i=0;i<fakeSnake.length-1;i++){
+            Map[fakeSnake[i][1]][fakeSnake[i][0]] = 1;
+        }
+        var eatEndpath = astar(fakeSnake[0],fakeSnake[fakeSnake.length - 1],Map);
+
+        // 虚拟蛇不能吃到自己的尾巴
+        if (eatEndpath.length == 1){
+            // 真蛇能否吃到自己的尾巴
+            path = astar(Position[0],Position[Position.length-1],Map);
+            if (path.length == 1){ // 真蛇不能吃到自己的尾巴
+                let cnt = 0;
+                while(path.length == 1 && cnt < Position.length) {path = astar(Position[0],RandomPos(),Map);cnt++;}
+            }
+        }
+    } else if (path.length == 1) { // 吃不到食物
+        console.log("eat tail")
+        Map = new Array(30).fill(0).map(() => new Array(45).fill(0));
+        for(let i=0;i<Position.length-1;i++){
+            Map[Position[i][1]][Position[i][0]] = 1;
+        }
+        path = astar(Position[0],Position[Position.length - 1],Map);
+        // 如果真蛇能吃到自己的尾巴，就直接吃
+        if (path.length == 1){ // 否则就 wander
+            let cnt = 0;
+            console.log("Random Pos")
+            while(path.length == 1 && cnt < Position.length) {path = astar(Position[0],RandomPos(),Map);cnt++;}
+        }
+
     } 
+    let nextdirection = nextStep(path[0],path[1]);
+    GameConfig.SnakeDirection = nextdirection;
 }
 
 function setupTimer() {
