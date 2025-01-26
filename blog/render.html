@@ -107,22 +107,27 @@
         import { marked } from '../js/marked.esm.js';
         const url = new URL(window.location.href);
         const filename = url.searchParams.get('slug');
-
+      
         if (!filename) {
-            // 跳转到404
-            window.location.href = '../404.html';
-        
+          window.location.href = '../404.html';
         } else {
-            fetch(`./${filename}.md`)
-            .then(response => response.text())
+          fetch(`./${filename}.md`)
+            .then(response => {
+              if (!response.ok) throw new Error('404');
+              return response.text();
+            })
             .then(text => {
-                document.getElementById('markdown-body').innerHTML = marked.parse(text);
+              const html = marked.parse(text);
+              document.getElementById('markdown-body').innerHTML = html;
+              // 使用Promise确保MathJax完成渲染
+              return MathJax.typesetPromise(); 
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              window.location.href = '../404.html';
             });
         }
-
-        MathJax.typeset();
-
-    </script>
+      </script>
 
 </body>
 
