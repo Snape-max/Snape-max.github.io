@@ -21,5 +21,4 @@ jobs:
 
       - name: Run script
         run: |
-          cd blog
-          echo "hello"
+          python blog/update_posts.py

@@ -43,9 +43,9 @@
       "date": "2023-08-11"
     }
   ],
-  "M4N": [
+  "C++": [
     {
-      "title": "ax-pipeline交叉编译",
+      "title": "ax650交叉编译ax-pipeline",
       "slug": "交叉编译",
       "date": "2024-06-19"
     }

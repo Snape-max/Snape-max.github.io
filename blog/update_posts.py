@@ -2,15 +2,17 @@ import os
 import json
 import re
 
+BLOG_PATH = "./blog"
+
 # 获取当前目录下的所有 .md 文件
-md_files = [file for file in os.listdir() if file.endswith('.md')]
+md_files = [file for file in os.listdir(BLOG_PATH) if file.endswith('.md')]
 
 # 存储博客数据的字典，键为分类，值为博客数据列表
 blog_data_by_category = {}
 
 # 遍历每个 .md 文件并获取分类、最后一次编辑日期、标题和文件名
 for md_file in md_files:
-    with open(md_file, 'r', encoding='utf-8') as f:
+    with open(os.path.join(BLOG_PATH, md_file), 'r', encoding='utf-8') as f:
         content = f.read()
         # 使用正则表达式匹配分类、日期和标题
         category_match = re.search(r'category:\s*(.+)', content)
@@ -33,7 +35,7 @@ for md_file in md_files:
             })
 
 # 将博客数据写入 JSON 文件
-with open('posts.json', 'w', encoding='utf-8') as json_file:
+with open('blog/posts.json', 'w', encoding='utf-8') as json_file:
     json.dump(blog_data_by_category, json_file, indent=2, ensure_ascii=False)
 
 print('JSON data has been written to blog/posts.json')
