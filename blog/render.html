@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Blogs</title>
-    <link rel="stylesheet" href="css/blogstyle.css"> <!-- 添加链接到外部 CSS 文件 -->
-    <link rel="icon" type="image/png" href="asset/ico.png">
+    <link rel="stylesheet" href="../css/blogstyle.css"> 
+    <link rel="stylesheet" href="../css/default.css">
+    <link rel="icon" type="image/png" href="../asset/ico.png">
     <head>
         <!--背景渐变效果样式代码开始（可忽略）-->
         <style type="text/css">
@@ -57,6 +59,24 @@
                 bottom: 0;
                 left: 0;
             }
+
+            .markdown-body {
+                box-sizing: border-box;
+                min-width: 200px;
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 45px;
+                background-color: rgba(255, 255, 255, 0.5); /* 半透明背景 */
+                backdrop-filter: blur(10px); /* 毛玻璃效果 */
+                border-radius: 10px; /* 圆角 */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+        
+            @media (max-width: 767px) {
+                .markdown-body {
+                    padding: 15px;
+                }
+            }
         </style>
         <!--定义底部承载游动小鱼特效的div样式结束-->
     </head>
@@ -64,59 +84,45 @@
 <body>
     <nav>
         <ul>
-			<li><a href="index.html">Home</a></li>
-			<li><a href="blog.html">Blog</a></li>
-			<li><a href="tools.html">Tools</a></li>
+			<li><a href="../index.html">Home</a></li>
+			<li><a href="../blog.html">Blog</a></li>
+			<li><a href="../tools.html">Tools</a></li>
             <li><a href="https://github.com/Snape-max">Github</a></li>
         </ul>
     </nav>
+    <br>
+    <div id="markdown-body" class="markdown-body">
+  
+    </div>
 
-    <section id="blog-list">
-        <h1>Blog Posts</h1>
-        <ul id="posts-list">
-            <!-- Blog posts will be dynamically added here -->
-        </ul>
-    </section>
+    <script type="module">
+        import { marked } from '../js/marked.esm.js';
+        const url = new URL(window.location.href);
+        const filename = url.searchParams.get('slug');
 
-    <script>
-        fetch('./blog/posts.json')
-            .then(response => response.json())
-            .then(data => {
-                const blogList = document.getElementById('posts-list');
-                // 遍历每个分类
-                for (const category in data) {
-                    if (data.hasOwnProperty(category)) {
-                        const categoryPosts = data[category];
-
-                        // 按日期由近到远排序
-                        categoryPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                        categoryPosts.forEach(post => {
-                            const listItem = document.createElement('li');
-                            listItem.classList.add('post');
-                            listItem.innerHTML = `
-                                <a href="blog/render?slug=${post.slug}">${post.title}</a>
-                                <span class="post-date">${post.date}</span>
-                                <span class="post-category">#${category}</span>
-                            `;
-                            blogList.appendChild(listItem);
-                        });
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching blog posts:', error);
+        if (!filename) {
+            // 跳转到404
+            window.location.href = '../404.html';
+        
+        } else {
+            fetch(`./${filename}.md`)
+            .then(response => response.text())
+            .then(text => {
+                document.getElementById('markdown-body').innerHTML = marked.parse(text);
             });
+        }
+
+
     </script>
 
     <!--引入jquery-->
-    <script src="js/jquery.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
 
     <!--承载游动小鱼特效的div容器-->
     <div id="jsi-flying-fish-container" class="container"></div>
 
     <!--核心特效定义js-->
-    <script src='js/fish.js'></script>
+    <script src='../js/fish.js'></script>
 
 </body>
 
