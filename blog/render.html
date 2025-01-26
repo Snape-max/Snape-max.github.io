@@ -9,6 +9,14 @@
     <title>Blogs</title>
     <link rel="stylesheet" href="../css/blogstyle.css"> 
     <link rel="stylesheet" href="../css/default.css">
+
+    <script>
+        MathJax = {
+            tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
     <link rel="icon" type="image/png" href="../asset/ico.png">
     <head>
         <!--背景渐变效果样式代码开始（可忽略）-->
@@ -112,6 +120,7 @@
             });
         }
 
+        MathJax.typeset();
 
     </script>
 
