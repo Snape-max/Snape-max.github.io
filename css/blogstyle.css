@@ -26,15 +26,6 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 
-
-
-
-
-
-
-
-
-
 /* Reset some default styles */
 body, h1, h2, p {
     margin: 0;
@@ -114,15 +105,6 @@ nav a:hover {
 #search-form button:hover {
     background-color: #1b4387;
 }
-
-
-
-
-
-
-
-
-
 
 
 /* 美化博客列表部分 */

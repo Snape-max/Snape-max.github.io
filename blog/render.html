@@ -99,6 +99,7 @@
         if (!filename) {
           window.location.href = '../404.html';
         } else {
+            document.title = filename;
           fetch(`./${filename}.md`)
             .then(response => {
               if (!response.ok) throw new Error('404');
