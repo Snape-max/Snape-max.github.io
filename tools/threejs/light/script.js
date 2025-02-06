@@ -42,7 +42,7 @@ const loadingElement = document.createElement('div');
 loadingElement.style.position = 'absolute';
 loadingElement.style.top = '50%';
 loadingElement.style.left = '50%';
-loadingElement.style.transform = 'translate(-50%, -50%)';
+// loadingElement.style.transform = 'translate(-50%, -50%)';
 loadingElement.style.color = 'white';
 loadingElement.style.fontSize = '24px';
 loadingElement.innerText = 'Loading...';
@@ -112,7 +112,7 @@ const cube = new THREE.Mesh(
     })
 )
 
-cube.position.set(0, 1, 0);
+cube.position.set(0, 1.5, 0);
 cube.castShadow = true;
 plane.receiveShadow = true;
 scene.add(cube, plane);
