@@ -1,5 +1,5 @@
-import * as THREE from "./three.module.js";
-import { PointerLockControls } from "./PointerLockControls.js";
+import * as THREE from "../js/three/three.module.js";
+import { PointerLockControls } from "../js/controls/PointerLockControls.js";
 
 // 初始化场景、相机和渲染器
 const scene = new THREE.Scene();
@@ -31,9 +31,9 @@ const Maze = [
 ];
 
 // 加载纹理
-const brickTexture = textureLoader.load('./assets/texture/long_white_tiles_diff_1k.jpg');
-const floorTexture = textureLoader.load('./assets/texture/asphalt_06_diff_1k.jpg');
-const ceilingTexture = textureLoader.load('./assets/texture/marble_01_diff_1k.jpg');
+const brickTexture = textureLoader.load('../assets/texture/long_white_tiles_diff_1k.jpg');
+const floorTexture = textureLoader.load('../assets/texture/asphalt_06_diff_1k.jpg');
+const ceilingTexture = textureLoader.load('../assets/texture/marble_01_diff_1k.jpg');
 
 // 创建几何体和材质
 const wallGeometry = new THREE.BoxGeometry(10, 10, 10);
