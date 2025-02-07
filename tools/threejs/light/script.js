@@ -1,6 +1,5 @@
 import * as THREE from "../js/three/three.module.js";
 import { OrbitControls } from "../js/controls/OrbitControls.js";
-import { RectAreaLightHelper } from "../js/helpers/RectAreaLightHelper.js";
 
 // 创建加载管理器
 const loadingManager = new THREE.LoadingManager();
