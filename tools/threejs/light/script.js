@@ -1,5 +1,6 @@
 import * as THREE from "../js/three/three.module.js";
 import { OrbitControls } from "../js/controls/OrbitControls.js";
+import { RectAreaLightHelper } from "../js/helpers/RectAreaLightHelper.js";
 
 // 创建加载管理器
 const loadingManager = new THREE.LoadingManager();
@@ -79,17 +80,15 @@ const planeColorMap = loader.load("../assets/texture/Marble07_1K_BaseColor.png")
 const planeNormalMap = loader.load("../assets/texture/Marble07_1K_Normal.png")
 const planeRoughnessMap = loader.load("../assets/texture/Marble07_1K_Roughness.png")
 
-// 光源
-const ambientLight = new THREE.AmbientLight(0x404040, 1);
-scene.add(ambientLight);
 
-const pointLight = new THREE.PointLight(0xffffff, 20);
-const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.5);
-pointLight.position.set(5, 4, 0);
-pointLight.castShadow = true;
-pointLight.shadow.mapSize.width = 1024;
-pointLight.shadow.mapSize.height = 1024;
-scene.add(pointLight, pointLightHelper);
+const firplaceMap = loader.load("../assets/hdri/space.jpg", () => {
+    firplaceMap.mapping = THREE.EquirectangularReflectionMapping;
+    firplaceMap.colorSpace = THREE.SRGBColorSpace;
+    scene.background = firplaceMap;
+    
+})
+
+
 
 const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(20, 20),
@@ -97,6 +96,7 @@ const plane = new THREE.Mesh(
         map: planeColorMap,
         normalMap: planeNormalMap,
         roughnessMap: planeRoughnessMap,
+        side: THREE.DoubleSide,
     })
 );
 
@@ -117,12 +117,32 @@ cube.castShadow = true;
 plane.receiveShadow = true;
 scene.add(cube, plane);
 
+// 光源
+const ambientLight = new THREE.AmbientLight(0x404040, 1);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 20);
+const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.5);
+pointLight.position.set(5, 6, -5);
+pointLight.castShadow = true;
+pointLight.shadow.mapSize.width = 1024;
+pointLight.shadow.mapSize.height = 1024;
+
+const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.3 );
+directionalLight.position.set(-6, 6, 0);
+directionalLight.castShadow = true;
+directionalLight.target = cube;
+
+const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 0.5);
+scene.add( directionalLight , directionalLightHelper);
+scene.add(pointLight, pointLightHelper);
+
 let angle = 0;
 
 function animate() {
     requestAnimationFrame(animate);
     
-    angle += 0.01;
+    angle += 0.001;
     pointLight.position.x = Math.sin(angle) * 5;
     pointLight.position.z = Math.cos(angle) * 5;
 
