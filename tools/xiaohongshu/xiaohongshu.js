@@ -5,7 +5,9 @@ var result = document.getElementById("result");
 var description = document.getElementById("description");
 var info = document.getElementById("info");
 
-var ci = "http://ci.xiaohongshu.com/";
+var ci = "https://ci.xiaohongshu.com/";
+var bd = "https://sns-img-bd.xhscdn.com/"
+
 var hw = "https://sns-img-hw.xhscdn.com/";
 var qc = "https://sns-img-qc.xhscdn.com/";
 
