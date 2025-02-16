@@ -32,14 +32,14 @@ async function Parser(link) {
     }
     const data = await response.json();
     // 确保数据中有images属性再返回
-    if (data && data.images) {
+    if (data && data.images_traceId) {
       info.innerHTML = "";
       result.style.display = "block";
       imgHtml = "";
-      for (let i = 0; i < data.images.length; i++) {
+      for (let i = 0; i < data.images_traceId.length; i++) {
         // imgHtml += `<a href='${data.images[i]}' download>图片${i+1}, 点击下载</a>`;
         imgHtml +=
-          `<a href='${ci + data.images[i] + rawformat}' target='_blank'><img src='${ci + data.images[i] + webformat}' href='${data.images[i]}'></a>`;
+          `<a href='${ci + data.images_traceId[i] + rawformat}' target='_blank'><img src='${ci + data.images_traceId[i] + webformat}' href='${data.images_traceId[i]}'></a>`;
       }
 
       picarea.innerHTML = imgHtml;
