@@ -157,3 +157,7 @@ def get_db():
 async def example_with_db(db=Depends(get_db)):
     return {"db": db}
 ```
+
+## **项目代码**
+
+项目代码已上传至 [Qiumo api](https://github.com/Snape-max/api), 部署置 [Qiumo.fun](https://api.qiumo.fun/)
