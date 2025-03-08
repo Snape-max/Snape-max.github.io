@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>AI塔罗牌占卜</title>
+    <title>塔罗牌占卜</title>
     <style>
         /* 基础样式 */
         body {
@@ -220,7 +220,7 @@
 
         <div id="result"></div>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="./marked.min.js"></script>
 <script>
     // 卡片数据初始化
     const card_name = ['愚人', '魔术师', '女祭祀', '女皇', '皇帝', '教皇', '恋人',
@@ -337,6 +337,8 @@
     }
 
     async function interpretCards() {
+        let btn = document.getElementById('interpretBtn');
+        btn.disabled = true;
         if (!localStorage.getItem('apikey')) return checkAPIKey();
         
         const aspect = document.getElementById('query').value || '综合运势';
