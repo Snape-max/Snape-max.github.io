@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>塔罗牌占卜</title>
     <style>
-        /* 基础样式 */
+        meta[name="viewport"] {
+            content: width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #1a0f1f linear-gradient(45deg, #2d1b36 0%, #1a0f1f 100%);
@@ -12,12 +14,14 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
+            font-size: 16px;
+            padding: 10px;
         }
     
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px;
         }
     
         h2, h3 {
@@ -25,8 +29,15 @@
             text-shadow: 0 0 10px rgba(232, 216, 255, 0.3);
             margin-bottom: 1.5em;
         }
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 1em;
+        }
     
-        /* 输入区域 */
+        h3 {
+            font-size: 1.2em;
+        }
+    
         .input-section {
             text-align: center;
             background: rgba(255, 255, 255, 0.05);
@@ -34,6 +45,7 @@
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
+            padding: 1.5rem;
         }
     
         #query {
@@ -73,46 +85,46 @@
             box-shadow: 0 5px 15px rgba(106, 76, 147, 0.4);
         }
     
-        <!-- /* 卡片选择区域 */
+
         #cardSelection {
             text-align: center;
             margin-top: 2rem;
-        } -->
+        }
     
-        /* 卡片容器 */
+
         .card {
-            perspective: 800px; /* 独立透视 */
+            perspective: 800px; 
             width: 120px;
             height: 200px;
             margin: 0 auto;
-            position: relative; /* 新增定位 */
+            position: relative; 
         }
 
-        /* 卡片内部容器 */
+
         .card-inner {
             position: absolute;
             width: 100%;
             height: 100%;
             transition: transform 0.6s;
             transform-style: preserve-3d;
-            transform-origin: center center; /* 明确中心轴 */
+            transform-origin: center center; 
         }
 
-        /* 翻转状态 */
+
         .card.flipped .card-inner {
             transform: rotateY(180deg);
         }
 
-        /* 动态层级控制 */
+
         .card:hover {
-            z-index: 2 !important; /* 悬停时提升层级 */
+            z-index: 2 !important;
         }
 
         .card.flipped {
-            z-index: 1; /* 翻转时保持适当层级 */
+            z-index: 1;
         }
 
-        /* 正反面基础样式 */
+
         .card-front, .card-back {
             position: absolute;
             width: 100%;
@@ -123,7 +135,6 @@
             transform-style: preserve-3d;
         }
 
-        /* 牌背样式 */
         .card-back {
             background: #4a306d;
             transform: rotateY(0deg);
@@ -131,7 +142,6 @@
             border: 2px solid #7b5c9e;
         }
 
-        /* 牌面样式 */
         .card-front {
             background: #f0e6f5;
             transform: rotateY(180deg);
@@ -140,21 +150,19 @@
             align-items: center;
         }
 
-        /* 逆位调整 */
         .card-front.reversed {
-            transform: rotateY(180deg) rotate(180deg); /* 保持Y轴翻转后旋转 */
+            transform: rotateY(180deg) rotate(180deg); 
         }
 
-        /* 卡片容器布局优化 */
         .cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 25px; /* 增大间距 */
+            gap: 25px; 
             padding: 20px;
-            perspective: 1000px; /* 容器透视 */
+            perspective: 1000px; 
         }
     
-        /* 选择状态提示 */
+
         .selection-status {
             color: #b39ddb;
             font-size: 1.1em;
@@ -164,8 +172,9 @@
             border-radius: 8px;
         }
     
-        /* 结果区域 */
+
         #result {
+            visibility: hidden;
             margin-top: 2rem;
             padding: 2rem;
             background: rgba(0, 0, 0, 0.3);
@@ -175,7 +184,6 @@
             border: 1px solid #4a306d;
         }
     
-        /* 响应式设计 */
         @media (max-width: 600px) {
             .card {
                 width: 100px;
@@ -187,7 +195,6 @@
             }
         }
     
-        /* 加载动画 */
         @keyframes pulse {
             0% { opacity: 0.6; }
             50% { opacity: 1; }
@@ -219,20 +226,23 @@
         </div>
 
         <div id="result"></div>
+        <br>
+        <br>
+        <br>
     </div>
 <script src="./marked.min.js"></script>
 <script>
-    // 卡片数据初始化
+    // 卡片
     const card_name = ['愚人', '魔术师', '女祭祀', '女皇', '皇帝', '教皇', '恋人',
                 '战车', '力量', '隐士', '命运之轮', '正义', '倒吊人', '死神',
                 '节制', '魔鬼', '高塔', '星星', '月亮', '太阳', '审判', '世界'];
                 
     const tarotCards = card_name.map((name, id) => ({ id, name }));
 
-    // API密钥检查
+    // API
     function checkAPIKey() {
         if (!localStorage.getItem('apikey')) {
-            const key = prompt('请输入您的OpenAI API密钥：');
+            const key = prompt('请输入您的DeepSeek API密钥：');
             if (key) localStorage.setItem('apikey', key);
             else alert('需要API密钥才能使用服务！');
         }
@@ -262,8 +272,9 @@
     function initCards() {
         const container = document.getElementById('cardsContainer');
         container.innerHTML = '';
-        
-        tarotCards.forEach(card => {
+        // 打乱tarotCards
+        shuffledtarotCards = tarotCards.sort(() => Math.random() - 0.5);
+        shuffledtarotCards.forEach(card => {
             const cardDiv = document.createElement('div');
             cardDiv.className = 'card';
             cardDiv.innerHTML = `
@@ -339,6 +350,8 @@
     async function interpretCards() {
         let btn = document.getElementById('interpretBtn');
         btn.disabled = true;
+        let reslult = document.getElementById('result');
+        reslult.style.visibility = 'visible';
         if (!localStorage.getItem('apikey')) return checkAPIKey();
         
         const aspect = document.getElementById('query').value || '综合运势';
