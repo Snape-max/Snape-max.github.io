@@ -10,12 +10,12 @@
         </div>
     </div>
 
-    <a href="#" class="back">GO BACK</a>
+    <a href="/" class="back">GO BACK</a>
 
     <div id="tsparticles"></div>
 
     <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/tsparticles@1.18.11/dist/tsparticles.min.js"></script>
+        src="js/tsparticles.min.js"></script>
     <script>
         tsParticles.load("tsparticles", {
             fpsLimit: 60,
@@ -118,6 +118,8 @@
             #9b59b6
         );
         -webkit-background-clip: text;
+        -moz-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         background-size: 400%;
         text-shadow: 1px 1px 2px transparentize(#fff, 0.75);
