@@ -169,7 +169,7 @@
             padding: 2rem;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 15px;
-            line-height: 1.6;
+
             white-space: pre-wrap;
             border: 1px solid #4a306d;
             transition: all 0.3s ease;
@@ -347,7 +347,7 @@
         
         const aspect = document.getElementById('query').value || '综合运势';
         const prompt = get_prompt(aspect, selectedCards);
-        
+        //console.log(prompt);
         resultDiv.innerHTML = '🔮 正在解读中...';
 
         try {
@@ -360,7 +360,6 @@
                 body: JSON.stringify({
                     model: "deepseek-chat",
                     messages: [{ role: "user", content: prompt }],
-                    temperature: 0.7,
                     stream: true  // 启用流式传输
                 })
             });
